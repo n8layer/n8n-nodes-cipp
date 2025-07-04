@@ -1,19 +1,19 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "@n8layer/n8n-nodes-n8n-nodes-cipp",
   "version": "0.1.0",
-  "description": "",
+  "description": "This is an n8n community node. It lets you use CIPP in your n8n workflows.",
   "keywords": [
     "n8n-community-node-package"
   ],
-  "license": "MIT",
-  "homepage": "",
+  "license": "AGPL-3.0",
+  "homepage": "https://www.n8layer.io",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "n8layer",
+    "email": "support@n8layer.io"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/n8layer/n8n-nodes-cipp.git"
   },
   "engines": {
     "node": ">=20.15"
@@ -33,12 +33,10 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
+      "dist/credentials/CippOAuth2Api.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/Cipp/Cipp.node.js"
     ]
   },
   "devDependencies": {
