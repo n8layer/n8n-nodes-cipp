@@ -1,6 +1,6 @@
 import { INodeType, INodeTypeDescription, NodeConnectionType } from 'n8n-workflow';
 
-import { tenantOperations } from './descriptions/TenantDescription';
+import { tenantOperations, tenantFields } from './descriptions/TenantDescription';
 
 export class Cipp implements INodeType {
 	description: INodeTypeDescription = {
@@ -47,6 +47,7 @@ export class Cipp implements INodeType {
 			},
 			// Operation
 			...tenantOperations,
+			...tenantFields,
 		],
 	};
 }
