@@ -11,6 +11,9 @@
     "name": "n8layer",
     "email": "support@n8layer.io"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/n8layer/n8n-nodes-cipp.git"
