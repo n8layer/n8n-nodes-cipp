@@ -35,8 +35,8 @@ export const calendarPermissionOperations: INodeProperties[] = [
 				action: 'Edit calendar permissions',
 				routing: {
 					request: {
-						method: 'PATCH',   // TODO: this may be a POST; may need to use customer tenant id
-						url: '/editcalendarpermissions',
+						method: 'POST',   // TODO: this may be a POST; may need to use customer tenant id
+						url: '/execeditcalendarpermissions',
 						body: {
 							TenantFilter: '={{ $parameter.tenantFilter }}',
 							permissions: '={{ $parameter.permissions || undefined }}',
