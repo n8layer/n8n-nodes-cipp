@@ -1,10 +1,11 @@
-import { ICredentialType, INodeProperties } from 'n8n-workflow';
+import { ICredentialType, INodeProperties, Icon } from 'n8n-workflow';
 
 export class CippOAuth2Api implements ICredentialType {
 	name = 'cippOAuth2Api';
 	displayName = 'CIPP OAuth2 API';
 	documentationUrl = 'https://docs.cipp.app/api-documentation/setup-and-authentication';
 	extends = ['oAuth2Api'];
+	icon = 'file:Cipp.svg' as Icon;
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Grant Type',
