@@ -55,14 +55,14 @@ export const calendarPermissionOperations: INodeProperties[] = [
 export const calendarPermissionFields: INodeProperties[] = [
 	{
 		displayName: 'User ID',
-		name: 'userId',
+		name: 'userid',
 		type: 'string',
 		required: true,
 		default: '',
 		displayOptions: {
 			show: {
-				resource: ['calendarPermission', 'update'],
-				operation: ['getMany'],
+				resource: ['calendarPermission'],
+				operation: ['getMany', 'update'],
 			},
 		},
 	},
