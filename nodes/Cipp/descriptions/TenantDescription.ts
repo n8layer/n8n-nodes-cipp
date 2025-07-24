@@ -15,19 +15,24 @@ export const tenantOperations: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'List Tenants',
-				value: 'getMany',
-				action: 'List tenants',
+				name: 'Edit Tenant',
+				value: 'updateTenant',
+				action: 'Edit tenant',
 				routing: {
 					request: {
-						method: 'GET',
-						url: '/listTenants',
+						method: 'POST',
+						url: '/editTenant',
+						body: {
+							customerid: '={{ $parameter.customerId }}',
+							tenantalias: '={{ $parameter.tenantAlias }}',
+							tenantgroups: '={{ $parameter.tenantGroups }}',
+						},
 					},
 				},
 			},
 			{
 				name: 'Get Tenant',
-				value: 'get',
+				value: 'getTenant',
 				action: 'Get tenant',
 				routing: {
 					request: {
@@ -40,18 +45,27 @@ export const tenantOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Edit Tenant',
-				value: 'update',
-				action: 'Edit tenant',
+				name: 'List Shared Mailbox Statistics',
+				value: 'getSharedMailboxStatistics',
+				action: 'List shared mailbox statistics',
 				routing: {
 					request: {
-						method: 'POST',
-						url: '/editTenant',
-						body: {
-							customerid: '={{ $parameter.customerId }}',
-							tenantalias: '={{ $parameter.tenantAlias }}',
-							tenantgroups: '={{ $parameter.tenantGroups }}',
+						method: 'GET',
+						url: '/ListSharedMailboxStatistics',
+						qs: {
+							tenantFilter: '={{ $parameter.tenantFilter }}',
 						},
+					},
+				},
+			},
+			{
+				name: 'List Tenants',
+				value: 'getMany',
+				action: 'List tenants',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/listTenants',
 					},
 				},
 			},
@@ -69,7 +83,7 @@ export const tenantFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['tenant'],
-				operation: ['get'],
+				operation: ['getTenant', 'getSharedMailboxStatistics'],
 			},
 		},
 		default: '',
@@ -82,7 +96,7 @@ export const tenantFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['tenant'],
-				operation: ['update'],
+				operation: ['updateTenant'],
 			},
 		},
 		default: '',
@@ -95,7 +109,7 @@ export const tenantFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['tenant'],
-				operation: ['update'],
+				operation: ['updateTenant'],
 			},
 		},
 		default: '',
@@ -108,7 +122,7 @@ export const tenantFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['tenant'],
-				operation: ['update'],
+				operation: ['updateTenant'],
 			},
 		},
 		default: '',
