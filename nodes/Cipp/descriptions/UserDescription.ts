@@ -39,33 +39,36 @@ export const userOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'POST',
-						url: '/addUser',
+						url: '/AddUser',
 						body: {
 							tenantFilter: '={{ $parameter.tenantFilter }}',
-							displayname: '={{ $parameter.displayname }}',
-							mailnickname: '={{ $parameter.mailnickname }}',
-							autopassword: '={{ $parameter.autopassword }}',
-							password: '={{ $parameter.password }}',
-							givenname: '={{ $parameter.givenname }}',
+							usageLocation: '={{ JSON.parse($parameter.usageLocation) }}',
+							givenName: '={{ $parameter.givenName }}',
 							surname: '={{ $parameter.surname }}',
-							primaryDomain: '={{ $parameter.primaryDomain.domainValues }}',
-							addedaliases: '={{ $parameter.addedaliases }}',
-							copyfrom: '={{ $parameter.copyfrom }}',
-							UsageLocation: '={{ $parameter.UsageLocation.locationValues }}',
-							mustchangepass: '={{ $parameter.mustchangepass }}',
-							removelicenses: false,
-							country: '={{ $parameter.country }}',
-							postalcode: '={{ $parameter.postalcode }}',
-							companyname: '={{ $parameter.companyname }}',
-							streetaddress: '={{ $parameter.streetaddress }}',
-							mobilephone: '={{ $parameter.mobilephone }}',
-							businessphone: '={{ $parameter.businessphone }}',
-							jobtitle: '={{ $parameter.jobtitle }}',
-							department: '={{ $parameter.department }}',
-							city: '={{ $parameter.city }}',
-							setmanager: '={{ $parameter.setmanager.managerValues ? { value: $parameter.setmanager.managerValues.value } : null }}',
-							Scheduled: '={{ $parameter.Scheduled.scheduledValues ? { enabled: $parameter.Scheduled.scheduledValues.enabled, date: $parameter.Scheduled.scheduledValues.date } : null }}',
-							PostExecution: '={{ $parameter.PostExecution.postExecutionValues ? { webhook: $parameter.PostExecution.postExecutionValues.webhook, psa: $parameter.PostExecution.postExecutionValues.psa, email: $parameter.PostExecution.postExecutionValues.email } : null }}',
+							displayName: '={{ $parameter.displayName }}',
+							username: '={{ $parameter.username }}',
+							primDomain: '={{ JSON.parse($parameter.primDomain) }}',
+							Autopassword: '={{ $parameter.Autopassword }}',
+							MustChangePass: '={{ $parameter.MustChangePass }}',
+							removeLicenses: '={{ $parameter.removeLicenses }}',
+							jobTitle: '={{ $parameter.jobTitle || undefined }}',
+							streetAddress: '={{ $parameter.streetAddress || undefined }}',
+							city: '={{ $parameter.city || undefined }}',
+							state: '={{ $parameter.state || undefined }}',
+							postalCode: '={{ $parameter.postalCode || undefined }}',
+							country: '={{ $parameter.country || undefined }}',
+							companyName: '={{ $parameter.companyName || undefined }}',
+							department: '={{ $parameter.department || undefined }}',
+							mobilePhone: '={{ $parameter.mobilePhone || undefined }}',
+							businessPhones: '={{ $parameter.businessPhones ? JSON.parse($parameter.businessPhones) : undefined }}',
+							otherMails: '={{ $parameter.otherMails || undefined }}',
+							defaultAttributes: '={{ $parameter.defaultAttributes ? JSON.parse($parameter.defaultAttributes) : undefined }}',
+							setManager: '={{ $parameter.setManager ? JSON.parse($parameter.setManager) : undefined }}',
+							Scheduled: '={{ $parameter.Scheduled ? JSON.parse($parameter.Scheduled) : {"enabled":false} }}',
+							password: '={{ $parameter.password || undefined }}',
+							webhook: '={{ $parameter.webhook || false }}',
+							email: '={{ $parameter.email || false }}',
+							psa: '={{ $parameter.psa || false }}',
 						},
 					},
 				},
@@ -245,6 +248,368 @@ export const userOperations: INodeProperties[] = [
 ];
 
 export const userFields: INodeProperties[] = [
+	// Add User Fields
+	{
+		displayName: 'Usage Location',
+		name: 'usageLocation',
+		type: 'json',
+		default: '{"value":"US","label":"United States"}',
+		required: true,
+		description: 'The usage location for the user (JSON format with value and label)',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'First Name',
+		name: 'givenName',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'The first name of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Last Name',
+		name: 'surname',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'The last name of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Display Name',
+		name: 'displayName',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'The display name of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Username',
+		name: 'username',
+		type: 'string',
+		default: '',
+		required: true,
+		description: 'The username for the user (without domain)',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Primary Domain',
+		name: 'primDomain',
+		type: 'json',
+		default: '{"label":"example.com","value":"example.com","addedFields":{}}',
+		required: true,
+		description: 'The primary domain for the user (JSON format). Label and value should both be the domain name.',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Auto Generate Password',
+		name: 'Autopassword',
+		type: 'boolean',
+		default: true,
+		description: 'Whether to automatically generate a password',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Must Change Password',
+		name: 'MustChangePass',
+		type: 'boolean',
+		default: true,
+		description: 'Whether the user must change their password at next login',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Remove Licenses',
+		name: 'removeLicenses',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to remove licenses from the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Job Title',
+		name: 'jobTitle',
+		type: 'string',
+		default: '',
+		description: 'The job title of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Street Address',
+		name: 'streetAddress',
+		type: 'string',
+		default: '',
+		description: 'The street address of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'City',
+		name: 'city',
+		type: 'string',
+		default: '',
+		description: 'The city of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'State/Province',
+		name: 'state',
+		type: 'string',
+		default: '',
+		description: 'The state or province of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Postal Code',
+		name: 'postalCode',
+		type: 'string',
+		default: '',
+		description: 'The postal code of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Country',
+		name: 'country',
+		type: 'string',
+		default: '',
+		description: 'The country of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Company Name',
+		name: 'companyName',
+		type: 'string',
+		default: '',
+		description: 'The company name of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Department',
+		name: 'department',
+		type: 'string',
+		default: '',
+		description: 'The department of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Mobile Phone',
+		name: 'mobilePhone',
+		type: 'string',
+		default: '',
+		description: 'The mobile phone number of the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Business Phones',
+		name: 'businessPhones',
+		type: 'json',
+		default: '[""]',
+		description: 'Business phone numbers (JSON array of strings)',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Other Email Addresses',
+		name: 'otherMails',
+		type: 'string',
+		default: '',
+		description: 'Additional email addresses for the user (comma-separated)',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Default Attributes',
+		name: 'defaultAttributes',
+		type: 'json',
+		default: '{}',
+		description: 'Default attributes for the user (JSON format)',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Set Manager',
+		name: 'setManager',
+		type: 'json',
+		default: '{"label":"","value":"","addedFields":{}}',
+		description: 'Manager information (JSON format). Set label to display name and value to email address.',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Scheduled Creation',
+		name: 'Scheduled',
+		type: 'json',
+		default: '{"enabled":false}',
+		description: 'Schedule user creation (JSON format). Set enabled to true and add date field if needed.',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Password',
+		name: 'password',
+		type: 'string',
+		typeOptions: {
+			password: true,
+		},
+		default: '',
+		description: 'Manual password (only used if Auto Generate Password is false)',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+				Autopassword: [false],
+			},
+		},
+	},
+	{
+		displayName: 'Send to Webhook',
+		name: 'webhook',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to send results to webhook',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Send to Email',
+		name: 'email',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to send results to email',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Send to PSA',
+		name: 'psa',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to send results to PSA',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
 	{
 		displayName: 'User ID',
 		name: 'userId',
@@ -315,7 +680,7 @@ export const userFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['user'],
-				operation: ['updateUser', 'addUserBulk'],
+				operation: ['updateUser'],
 			},
 		},
 	},
@@ -351,7 +716,7 @@ export const userFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['user'],
-				operation: ['updateUser', 'addUserBulk'],
+				operation: ['updateUser'],
 			},
 		},
 	},
@@ -363,7 +728,7 @@ export const userFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['user'],
-				operation: ['updateUser', 'addUserBulk'],
+				operation: ['updateUser'],
 			},
 		},
 	},
@@ -375,7 +740,7 @@ export const userFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['user'],
-				operation: ['updateUser', 'addUserBulk'],
+				operation: ['updateUser'],
 			},
 		},
 	},
@@ -402,7 +767,7 @@ export const userFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['user'],
-				operation: ['execRestoreDeletedUser', 'addUser', 'addGuest'],
+				operation: ['execRestoreDeletedUser', 'addGuest', 'addUser'],
 			},
 		},
 	},
@@ -415,414 +780,7 @@ export const userFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['user'],
-				operation: ['addUser', 'addGuest'],
-			},
-		},
-	},
-	{
-		displayName: 'Username',
-		name: 'mailnickname',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Auto Password',
-		name: 'autopassword',
-		type: 'boolean',
-		default: true,
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Password',
-		name: 'password',
-		type: 'string',
-		typeOptions: {
-			password: true,
-		},
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-				autopassword: [false],
-			},
-		},
-	},
-	{
-		displayName: 'First Name',
-		name: 'givenname',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Last Name',
-		name: 'surname',
-		type: 'string',
-		default: '',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Domain',
-		name: 'primaryDomain',
-		type: 'fixedCollection',
-		default: {},
-		required: true,
-		typeOptions: {
-			multipleValues: false,
-		},
-		options: [
-			{
-				name: 'domainValues',
-				displayName: 'Domain',
-				values: [
-					{
-						displayName: 'Label',
-						name: 'label',
-						type: 'string',
-						default: '',
-						required: true,
-					},
-					{
-						displayName: 'Value',
-						name: 'value',
-						type: 'string',
-						default: '',
-						required: true,
-					},
-					{
-						displayName: 'Added Fields',
-						name: 'addedFields',
-						type: 'json',
-						default: '{}',
-					},
-				],
-			},
-		],
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Usage Location',
-		name: 'UsageLocation',
-		type: 'fixedCollection',
-		default: {},
-		required: true,
-		typeOptions: {
-			multipleValues: false,
-		},
-		options: [
-			{
-				name: 'locationValues',
-				displayName: 'Usage Location',
-				values: [
-					{
-						displayName: 'Value',
-						name: 'value',
-						type: 'string',
-						default: '',
-						required: true,
-					},
-					{
-						displayName: 'Label',
-						name: 'label',
-						type: 'string',
-						default: '',
-						required: true,
-					},
-				],
-			},
-		],
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Added Aliases',
-		name: 'addedaliases',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Copy From',
-		name: 'copyfrom',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Must Change Password',
-		name: 'mustchangepass',
-		type: 'boolean',
-		default: true,
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Country',
-		name: 'country',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Postal Code',
-		name: 'postalcode',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Company Name',
-		name: 'companyname',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Street Address',
-		name: 'streetaddress',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Mobile Phone',
-		name: 'mobilephone',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Business Phone',
-		name: 'businessphone',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Job Title',
-		name: 'jobtitle',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Department',
-		name: 'department',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'City',
-		name: 'city',
-		type: 'string',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Set Manager',
-		name: 'setmanager',
-		type: 'fixedCollection',
-		default: {},
-		description: 'The manager of the user. Either the UserPrincipalName(UPN) or the ID of the manager.',
-		typeOptions: {
-			multipleValues: false,
-		},
-		options: [
-			{
-				name: 'managerValues',
-				displayName: 'Manager',
-				values: [
-					{
-						displayName: 'Value',
-						name: 'value',
-						type: 'string',
-						default: '',
-						description: 'UserPrincipalName(UPN) or ID of the manager',
-					},
-				],
-			},
-		],
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Scheduled',
-		name: 'Scheduled',
-		type: 'fixedCollection',
-		default: {},
-		description: 'Schedule the user creation for a specific date and time',
-		typeOptions: {
-			multipleValues: false,
-		},
-		options: [
-			{
-				name: 'scheduledValues',
-				displayName: 'Scheduled Settings',
-				values: [
-					{
-						displayName: 'Enabled',
-						name: 'enabled',
-						type: 'boolean',
-						default: false,
-					},
-					{
-						displayName: 'Date',
-						name: 'date',
-						type: 'dateTime',
-						default: '',
-						displayOptions: {
-							show: {
-								enabled: [true],
-							},
-						},
-					},
-				],
-			},
-		],
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
-	{
-		displayName: 'Post Execution',
-		name: 'PostExecution',
-		type: 'fixedCollection',
-		default: {},
-		description: 'Configure post-execution actions',
-		typeOptions: {
-			multipleValues: false,
-		},
-		options: [
-			{
-				name: 'postExecutionValues',
-				displayName: 'Post Execution Settings',
-				values: [
-					{
-						displayName: 'Send to Webhook',
-						name: 'webhook',
-						type: 'boolean',
-						default: false,
-					},
-					{
-						displayName: 'Send to PSA',
-						name: 'psa',
-						type: 'boolean',
-						default: false,
-					},
-					{
-						displayName: 'Send to Email',
-						name: 'email',
-						type: 'boolean',
-						default: false,
-					},
-				],
-			},
-		],
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
+				operation: ['addGuest'],
 			},
 		},
 	},
