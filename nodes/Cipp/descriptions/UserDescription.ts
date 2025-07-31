@@ -47,7 +47,11 @@ export const userOperations: INodeProperties[] = [
 							surname: '={{ $parameter.surname }}',
 							displayName: '={{ $parameter.displayName }}',
 							username: '={{ $parameter.username }}',
-							primDomain: '={{ JSON.parse($parameter.primDomain) }}',
+							primDomain: {
+								label: '={{ $parameter.primDomain }}',
+								value: '={{ $parameter.primDomain }}',
+								addedFields: {},
+							},
 							Autopassword: '={{ $parameter.Autopassword }}',
 							MustChangePass: '={{ $parameter.MustChangePass }}',
 							removeLicenses: '={{ $parameter.removeLicenses }}',
@@ -60,7 +64,7 @@ export const userOperations: INodeProperties[] = [
 							companyName: '={{ $parameter.companyName || undefined }}',
 							department: '={{ $parameter.department || undefined }}',
 							mobilePhone: '={{ $parameter.mobilePhone || undefined }}',
-							businessPhones: '={{ $parameter.businessPhones ? JSON.parse($parameter.businessPhones).filter(phone => phone && phone.trim() !== "") : [] }}',
+							businessPhones: '={{ $parameter.businessPhones ? $parameter.businessPhones.split(",").map(phone => phone.trim()).filter(phone => phone !== "") : [] }}',
 							otherMails: '={{ $parameter.otherMails || undefined }}',
 							defaultAttributes: '={{ $parameter.defaultAttributes && $parameter.defaultAttributes !== "{}" && Object.keys(JSON.parse($parameter.defaultAttributes)).length > 0 ? JSON.parse($parameter.defaultAttributes) : undefined }}',
 							setManager: '={{ $parameter.setManager && $parameter.setManager !== "{}" && JSON.parse($parameter.setManager).label && JSON.parse($parameter.setManager).label.trim() !== "" ? JSON.parse($parameter.setManager) : undefined }}',
@@ -338,10 +342,10 @@ export const userFields: INodeProperties[] = [
 	{
 		displayName: 'Primary Domain',
 		name: 'primDomain',
-		type: 'json',
-		default: '{"label":"elasticit.com","value":"elasticit.com","addedFields":{}}',
+		type: 'string',
+		default: 'elasticit.com',
 		required: true,
-		description: 'Primary domain - just change "elasticit.com" to your domain in both places',
+		description: 'Primary domain for the user (e.g., elasticit.com)',
 		displayOptions: {
 			show: {
 				resource: ['user'],
@@ -508,9 +512,9 @@ export const userFields: INodeProperties[] = [
 	{
 		displayName: 'Business Phones',
 		name: 'businessPhones',
-		type: 'json',
-		default: '[""]',
-		description: 'Business phone numbers (JSON array of strings)',
+		type: 'string',
+		default: '',
+		description: 'Business phone numbers (comma-separated, e.g., "+1-555-123-4567, +1-555-987-6543")',
 		displayOptions: {
 			show: {
 				resource: ['user'],
