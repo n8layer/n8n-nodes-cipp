@@ -683,6 +683,7 @@ export const userFields: INodeProperties[] = [
 			},
 		},
 	},
+
 	{
 		displayName: 'User ID',
 		name: 'userId',
