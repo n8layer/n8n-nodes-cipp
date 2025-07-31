@@ -21,9 +21,9 @@ export const calendarPermissionOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '/listcalendarpermissions',
+						url: '/ListCalendarPermissions',
 						qs: {
-							userId: '={{ $parameter.userId }}',
+							userId: '={{ $parameter.userid }}',
 							tenantFilter: '={{ $parameter.tenantFilter }}',
 						},
 					},
@@ -36,11 +36,11 @@ export const calendarPermissionOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'POST',   // TODO: this may be a POST; may need to use customer tenant id
-						url: '/execeditcalendarpermissions',
+						url: '/AddCalendarPermissions',
 						body: {
 							TenantFilter: '={{ $parameter.tenantFilter }}',
 							permissions: '={{ $parameter.permissions || undefined }}',
-							userid: '={{ $parameter.userId }}',
+							Userid: '={{ $parameter.userid }}',
 							removeaccess: '={{ $parameter.removeaccess || undefined }}',
 							usertogetpermissions: '={{ $parameter.usertogetpermissions || undefined }}',
 							FolderName: '={{ $parameter.FolderName || undefined }}',
@@ -55,7 +55,7 @@ export const calendarPermissionOperations: INodeProperties[] = [
 export const calendarPermissionFields: INodeProperties[] = [
 	{
 		displayName: 'User ID',
-		name: 'userid',
+		name: 'userId',
 		type: 'string',
 		required: true,
 		default: '',
