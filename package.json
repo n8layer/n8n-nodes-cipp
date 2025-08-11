@@ -1,6 +1,6 @@
 {
   "name": "@n8layer/n8n-nodes-n8n-nodes-cipp",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "This is an n8n community node. It lets you use CIPP in your n8n workflows.",
   "keywords": [
     "n8n-community-node-package"
@@ -23,6 +23,8 @@
   },
   "main": "index.js",
   "scripts": {
+    "build": "npx rimraf dist && npx tsc && npx gulp build:icons",
+    "dev": "npx tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
