@@ -39,16 +39,10 @@ export const groupOperations: INodeProperties[] = [
 						body: {
 							tenantId: '={{ $parameter.tenantId }}',
 							groupId: '={{ $parameter.groupId }}',
-							AddMember: '={{ $parameter.AddMember }}',
-							AddOwner: {
-								value: '={{ $parameter.AddOwner }}',
-							},
-							RemoveMember: {
-								value: '={{ $parameter.RemoveMember }}',
-							},
-							RemoveOwner: {
-								value: '={{ $parameter.RemoveOwner }}',
-							},
+							AddMember: '={{ $parameter.AddMember ? {value: [$parameter.AddMember]} : undefined }}',
+							AddOwner: '={{ $parameter.AddOwner ? {value: [$parameter.AddOwner]} : undefined }}',
+							RemoveMember: '={{ $parameter.RemoveMember ? {value: [$parameter.RemoveMember]} : undefined }}',
+							RemoveOwner: '={{ $parameter.RemoveOwner ? {value: [$parameter.RemoveOwner]} : undefined }}',
 						},
 					},
 				},
