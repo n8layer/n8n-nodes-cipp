@@ -1,6 +1,6 @@
 {
   "name": "@n8layer/n8n-nodes-n8n-nodes-cipp",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "This is an n8n community node. It lets you use CIPP in your n8n workflows.",
   "keywords": [
     "n8n-community-node-package"
