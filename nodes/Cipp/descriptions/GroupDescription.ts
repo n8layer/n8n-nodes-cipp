@@ -40,9 +40,15 @@ export const groupOperations: INodeProperties[] = [
 							tenantId: '={{ $parameter.tenantId }}',
 							groupId: '={{ $parameter.groupId }}',
 							AddMember: '={{ $parameter.AddMember }}',
-							AddOwner: '={{ $parameter.AddOwner }}',
-							RemoveMember: '={{ $parameter.RemoveMember }}',
-							RemoveOwner: '={{ $parameter.RemoveOwner }}',
+							AddOwner: {
+								value: '={{ $parameter.AddOwner }}',
+							},
+							RemoveMember: {
+								value: '={{ $parameter.RemoveMember }}',
+							},
+							RemoveOwner: {
+								value: '={{ $parameter.RemoveOwner }}',
+							},
 						},
 					},
 				},
@@ -138,6 +144,7 @@ export const groupFields: INodeProperties[] = [
 		name: 'tenantid',
 		type: 'string',
 		default: '',
+		required: true,
 		displayOptions: {
 			show: {
 				resource: ['group'],
@@ -166,7 +173,7 @@ export const groupFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['group'],
-				operation: ['editGroup'],
+				operation: ['editGroup', 'removeUserFromGroup'],
 			},
 		},
 	},
@@ -179,13 +186,14 @@ export const groupFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['group'],
-				operation: ['editGroup'],
+				operation: ['editGroup', 'removeUserFromGroup'],
 			},
 		},
 	},
 	{
 		displayName: 'Add Member',
 		name: 'AddMember',
+		description: 'Add a member to the group by GUID or email address',
 		type: 'string',
 		default: '',
 		displayOptions: {
@@ -196,7 +204,7 @@ export const groupFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Add Owner',
+		displayName: 'Add Owner By GUID',
 		name: 'AddOwner',
 		type: 'string',
 		default: '',
@@ -208,7 +216,7 @@ export const groupFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Remove Member',
+		displayName: 'Remove Member by GUID',
 		name: 'RemoveMember',
 		type: 'string',
 		default: '',
@@ -220,7 +228,7 @@ export const groupFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Remove Owner',
+		displayName: 'Remove Owner By GUID',
 		name: 'RemoveOwner',
 		type: 'string',
 		default: '',
