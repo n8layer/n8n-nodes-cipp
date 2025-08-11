@@ -185,9 +185,9 @@ export const groupFields: INodeProperties[] = [
 		},
 	},
 	{
-		displayName: 'Add Member',
+		displayName: 'Add Member By GUID',
 		name: 'AddMember',
-		description: 'Add a member to the group by GUID or email address',
+		description: 'Add a member to the group by GUID',
 		type: 'string',
 		default: '',
 		displayOptions: {
