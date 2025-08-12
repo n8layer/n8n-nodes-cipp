@@ -76,6 +76,6 @@ export class Cipp implements INodeType {
 			...userFields,
 			...licenseOperations,
 			...licenseFields,
-		],
+				],
 	};
 }

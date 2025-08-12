@@ -21,14 +21,15 @@
   "engines": {
     "node": ">=20.15"
   },
+  "packageManager": "pnpm@9.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "npx rimraf dist && npx tsc && npx gulp build:icons",
-    "dev": "npx tsc --watch",
+    "build": "pnpm exec rimraf dist && pnpm exec tsc && pnpm exec gulp build:icons",
+    "dev": "pnpm exec tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
-    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+    "prepublishOnly": "pnpm run build && pnpm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
   },
   "files": [
     "dist"

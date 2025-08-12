@@ -43,7 +43,7 @@ export const userOperations: INodeProperties[] = [
 						body: {
 							tenantFilter: '={{ $parameter.tenantFilter }}',
 							usageLocation: {
-								label: '={{ $parameter.usageLocation }}',
+								label: '={{ $parameter.usageLocation === "US" ? "United States of America" : $parameter.usageLocation === "ES" ? "Spain" : $parameter.usageLocation === "SE" ? "Sweden" : $parameter.usageLocation === "CH" ? "Switzerland" : $parameter.usageLocation === "TW" ? "Taiwan" : $parameter.usageLocation === "TH" ? "Thailand" : $parameter.usageLocation === "AE" ? "United Arab Emirates" : $parameter.usageLocation === "GB" ? "United Kingdom" : $parameter.usageLocation === "AR" ? "Argentina" : $parameter.usageLocation === "AU" ? "Australia" : $parameter.usageLocation === "AT" ? "Austria" : $parameter.usageLocation === "BE" ? "Belgium" : $parameter.usageLocation === "BR" ? "Brazil" : $parameter.usageLocation === "CA" ? "Canada" : $parameter.usageLocation === "CL" ? "Chile" : $parameter.usageLocation === "CO" ? "Colombia" : $parameter.usageLocation === "CZ" ? "Czechia" : $parameter.usageLocation === "DK" ? "Denmark" : $parameter.usageLocation === "EG" ? "Egypt" : $parameter.usageLocation === "FI" ? "Finland" : $parameter.usageLocation === "FR" ? "France" : $parameter.usageLocation === "DE" ? "Germany" : $parameter.usageLocation === "HK" ? "Hong Kong" : $parameter.usageLocation === "IN" ? "India" : $parameter.usageLocation === "ID" ? "Indonesia" : $parameter.usageLocation === "IE" ? "Ireland" : $parameter.usageLocation === "IL" ? "Israel" : $parameter.usageLocation === "IT" ? "Italy" : $parameter.usageLocation === "JP" ? "Japan" : $parameter.usageLocation === "KR" ? "Korea (Republic Of)" : $parameter.usageLocation === "MY" ? "Malaysia" : $parameter.usageLocation === "MX" ? "Mexico" : $parameter.usageLocation === "NL" ? "Netherlands" : $parameter.usageLocation === "NZ" ? "New Zealand" : $parameter.usageLocation === "NO" ? "Norway" : $parameter.usageLocation === "PE" ? "Peru" : $parameter.usageLocation === "PH" ? "Philippines" : $parameter.usageLocation === "PL" ? "Poland" : $parameter.usageLocation === "PT" ? "Portugal" : $parameter.usageLocation === "QA" ? "Qatar" : $parameter.usageLocation === "SA" ? "Saudi Arabia" : $parameter.usageLocation === "SG" ? "Singapore" : $parameter.usageLocation === "ZA" ? "South Africa" : $parameter.usageLocation === "UY" ? "Uruguay" : $parameter.usageLocation }}',
 								value: '={{ $parameter.usageLocation }}',
 							},
 							givenName: '={{ $parameter.givenName }}',
@@ -67,14 +67,10 @@ export const userOperations: INodeProperties[] = [
 							companyName: '={{ $parameter.companyName || undefined }}',
 							department: '={{ $parameter.department || undefined }}',
 							mobilePhone: '={{ $parameter.mobilePhone || undefined }}',
-							businessPhones: '={{ $parameter.businessPhones ? $parameter.businessPhones.split(",").map(phone => phone.trim()).filter(phone => phone !== "") : [] }}',
+							businessPhones: '={{ $parameter.businessPhones ? $parameter.businessPhones.split(",").map(phone => phone.trim()).filter(phone => phone !== "") : undefined }}',
 							otherMails: '={{ $parameter.otherMails || undefined }}',
 							defaultAttributes: '={{ $parameter.defaultAttributes && $parameter.defaultAttributes !== "{}" && Object.keys(JSON.parse($parameter.defaultAttributes)).length > 0 ? JSON.parse($parameter.defaultAttributes) : undefined }}',
-							setManager: {
-								label: '={{ $parameter.setManager }}',
-								value: '={{ $parameter.setManager }}',
-								addedFields: {},
-							},
+							setManager: '={{ $parameter.setManager ? Object.fromEntries([["label", $parameter.setManager], ["value", $parameter.setManager], ["addedFields", {}]]) : undefined }}',
 							Scheduled: '={{ $parameter.Scheduled && $parameter.Scheduled.trim() !== "" ? {"enabled": true, "date": $parameter.Scheduled} : {"enabled": false} }}',
 							password: '={{ $parameter.password || undefined }}',
 							webhook: '={{ $parameter.webhook || false }}',
@@ -245,9 +241,9 @@ export const userOperations: INodeProperties[] = [
 							DisableSignIn: '={{ $parameter.DisableSignIn }}',
 							HideFromGAL: '={{ $parameter.HideFromGAL }}',
 							removeCalendarInvites: '={{ $parameter.removeCalendarInvites }}',
-							Scheduled: '={{ JSON.parse($parameter.Scheduled) }}',
-							tenantFilter: '={{ {"value": $parameter.tenantDomain, "label": $parameter.tenantLabel + " (" + $parameter.tenantDomain + ")", "type": "Tenant", "addedFields": {"defaultDomainName": $parameter.tenantDomain, "displayName": $parameter.tenantLabel, "customerId": $parameter.customerId || ""}} }}',
-							user: '={{ [{"label": $parameter.userName + " (" + $parameter.userEmail + ")", "value": $parameter.userEmail, "addedFields": {}}] }}',
+							Scheduled: '={{ $parameter.Scheduled ? JSON.parse($parameter.Scheduled) : {enabled: false} }}',
+							tenantFilter: '={{ Object.fromEntries([["value", $parameter.tenantDomain], ["label", $parameter.tenantLabel + " (" + $parameter.tenantDomain + ")"], ["type", "Tenant"], ["addedFields", Object.fromEntries([["defaultDomainName", $parameter.tenantDomain], ["displayName", $parameter.tenantLabel], ["customerId", $parameter.customerId || ""]])]]) }}',
+							user: '={{ [Object.fromEntries([["label", $parameter.userName + " (" + $parameter.userEmail + ")"], ["value", $parameter.userEmail], ["addedFields", {}]])] }}',
 							ClearImmutableId: '={{ $parameter.ClearImmutableId }}',
 							disableForwarding: '={{ $parameter.disableForwarding }}',
 							KeepCopy: '={{ $parameter.KeepCopy }}',
@@ -683,7 +679,6 @@ export const userFields: INodeProperties[] = [
 			},
 		},
 	},
-
 	{
 		displayName: 'User ID',
 		name: 'userId',
@@ -1136,20 +1131,20 @@ export const userFields: INodeProperties[] = [
 			},
 		},
 	},
-	{
-		displayName: 'Customer ID',
-		name: 'customerId',
-		type: 'string',
-		default: '',
-		placeholder: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-		description: 'The customer ID (GUID) for the tenant (optional)',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['offboardUser'],
-			},
-		},
-	},
+	// {
+	// 	displayName: 'Customer ID',
+	// 	name: 'customerId',
+	// 	type: 'string',
+	// 	default: '',
+	// 	placeholder: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+	// 	description: 'The customer ID (GUID) for the tenant (optional)',
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['user'],
+	// 			operation: ['offboardUser'],
+	// 		},
+	// 	},
+	// },
 	{
 		displayName: 'User Name',
 		name: 'userName',
