@@ -71,7 +71,7 @@ export const userOperations: INodeProperties[] = [
 							otherMails: '={{ $parameter.otherMails || undefined }}',
 							defaultAttributes: '={{ $parameter.defaultAttributes && $parameter.defaultAttributes !== "{}" && Object.keys(JSON.parse($parameter.defaultAttributes)).length > 0 ? JSON.parse($parameter.defaultAttributes) : undefined }}',
 							setManager: '={{ $parameter.setManager ? Object.fromEntries([["label", $parameter.setManager], ["value", $parameter.setManager], ["addedFields", {}]]) : undefined }}',
-							Scheduled: '={{ $parameter.Scheduled && $parameter.Scheduled.trim() !== "" ? {"enabled": true, "date": $parameter.Scheduled} : {"enabled": false} }}',
+							Scheduled: '={{ $parameter.Scheduled && $parameter.Scheduled.trim() !== "" ? {"enabled": true, "date": Math.floor(new Date($parameter.Scheduled).getTime() / 1000)} : {"enabled": false} }}',
 							password: '={{ $parameter.password || undefined }}',
 							webhook: '={{ $parameter.webhook || false }}',
 							email: '={{ $parameter.email || false }}',
@@ -80,7 +80,7 @@ export const userOperations: INodeProperties[] = [
 					},
 				},
 			},
-			
+
 			// {
 			// 	name: 'Add User Bulk',
 			// 	value: 'addUserBulk',
@@ -242,7 +242,7 @@ export const userOperations: INodeProperties[] = [
 							DisableSignIn: '={{ $parameter.DisableSignIn }}',
 							HideFromGAL: '={{ $parameter.HideFromGAL }}',
 							removeCalendarInvites: '={{ $parameter.removeCalendarInvites }}',
-							Scheduled: '={{ $parameter.Scheduled ? JSON.parse($parameter.Scheduled) : {enabled: false} }}',
+							Scheduled: '={{ $parameter.Scheduled && $parameter.Scheduled.trim() !== "" ? {"enabled": true, "date": Math.floor(new Date($parameter.Scheduled).getTime() / 1000)} : {"enabled": false} }}',
 							tenantFilter: '={{ Object.fromEntries([["value", $parameter.tenantDomain], ["label", $parameter.tenantLabel + " (" + $parameter.tenantDomain + ")"], ["type", "Tenant"], ["addedFields", Object.fromEntries([["defaultDomainName", $parameter.tenantDomain], ["displayName", $parameter.tenantLabel], ["customerId", $parameter.customerId || ""]])]]) }}',
 							user: '={{ [Object.fromEntries([["label", $parameter.userName + " (" + $parameter.userEmail + ")"], ["value", $parameter.userEmail], ["addedFields", {}]])] }}',
 							ClearImmutableId: '={{ $parameter.ClearImmutableId }}',
@@ -611,19 +611,19 @@ export const userFields: INodeProperties[] = [
 			},
 		},
 	},
-	{
-		displayName: 'Scheduled Creation',
-		name: 'Scheduled',
-		type: 'string',
-		default: '',
-		description: 'Schedule user creation for a specific date/time (e.g., "2024-12-31T23:59:59Z"). Leave empty for immediate creation.',
-		displayOptions: {
-			show: {
-				resource: ['user'],
-				operation: ['addUser'],
-			},
-		},
-	},
+	// {
+	// 	displayName: 'Scheduled Creation',
+	// 	name: 'Scheduled',
+	// 	type: 'string',
+	// 	default: '',
+	// 	description: 'Schedule user creation for a specific date/time (e.g., "2024-12-31T23:59:59Z"). Leave empty for immediate creation.',
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['user'],
+	// 			operation: ['addUser'],
+	// 		},
+	// 	},
+	// },
 	{
 		displayName: 'Password',
 		name: 'password',
@@ -1092,9 +1092,13 @@ export const userFields: INodeProperties[] = [
 	{
 		displayName: 'Scheduled',
 		name: 'Scheduled',
-		type: 'json',
-		default: '{"enabled":false}',
-		description: 'Schedule the offboarding operation (JSON format). Set enabled to true and add date field if needed.',
+		type: 'dateTime',
+		default: '',
+		description: 'The date and time when the operation will be scheduled',
+		typeOptions: {
+			timeFormat: 'HH:mm',
+			minuteStep: 15,
+		},
 		displayOptions: {
 			show: {
 				resource: ['user'],
@@ -1102,6 +1106,19 @@ export const userFields: INodeProperties[] = [
 			},
 		},
 	},
+	// {
+	// 	displayName: 'Scheduled',
+	// 	name: 'Scheduled',
+	// 	type: 'json',
+	// 	default: '{"enabled":false}',
+	// 	description: 'Schedule the offboarding operation (JSON format). Set enabled to true and add date field if needed.',
+	// 	displayOptions: {
+	// 		show: {
+	// 			resource: ['user'],
+	// 			operation: ['offboardUser'],
+	// 		},
+	// 	},
+	// },
 	{
 		displayName: 'Tenant Label',
 		name: 'tenantLabel',
