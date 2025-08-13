@@ -393,9 +393,9 @@ export const userFields: INodeProperties[] = [
 		displayName: 'Primary Domain',
 		name: 'primDomain',
 		type: 'string',
-		default: 'elasticit.com',
+		default: '',
 		required: true,
-		description: 'Primary domain for the user (e.g., elasticit.com)',
+		description: 'Primary domain for the user (e.g., n8layer.com)',
 		displayOptions: {
 			show: {
 				resource: ['user'],
@@ -833,7 +833,7 @@ export const userFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		description: 'The tenant ID of the user',
+		description: 'The tenant ID of the user or the domain name (e.g., "n8layer.com")',
 		displayOptions: {
 			show: {
 				resource: ['user'],
@@ -1098,6 +1098,7 @@ export const userFields: INodeProperties[] = [
 		typeOptions: {
 			timeFormat: 'HH:mm',
 			minuteStep: 15,
+			alwaysOpenEditWindow: true,
 		},
 		displayOptions: {
 			show: {
@@ -1140,7 +1141,7 @@ export const userFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		placeholder: 'elasticit.com',
+		placeholder: 'n8layer.com',
 		description: 'The domain name of the tenant',
 		displayOptions: {
 			show: {
@@ -1169,7 +1170,7 @@ export const userFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		placeholder: 'TestFirst TestLast',
+		placeholder: 'First Last',
 		description: 'The display name of the user to offboard',
 		displayOptions: {
 			show: {
@@ -1184,7 +1185,7 @@ export const userFields: INodeProperties[] = [
 		type: 'string',
 		default: '',
 		required: true,
-		placeholder: 'TTestLast@elasticit.com',
+		placeholder: 'firstlast@n8layer.com',
 		description: 'The email address (UPN) of the user to offboard',
 		displayOptions: {
 			show: {
