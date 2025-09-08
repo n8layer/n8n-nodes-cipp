@@ -98,25 +98,25 @@ export const userOperations: INodeProperties[] = [
 			// 		},
 			// 	},
 			// },
-			{
-				name: 'Edit User',
-				value: 'updateUser',
-				action: 'Edit user',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '/editUser',
-						body: {
-							setmananger: '={{ $parameter.setMananger }}',
-							removefromgroups: '={{ $parameter.removefromgroups }}',
-							addtogroups: '={{ $parameter.addtogroups }}',
-							copyfrom: '={{ $parameter.copyfrom }}',
-							label: '={{ $parameter.label }}',
-							value: '={{ $parameter.value }}',
-						},
-					},
-				},
-			},
+			// {
+			// 	name: 'Edit User',
+			// 	value: 'updateUser',
+			// 	action: 'Edit user',
+			// 	routing: {
+			// 		request: {
+			// 			method: 'POST',
+			// 			url: '/editUser',
+			// 			body: {
+			// 				setmananger: '={{ $parameter.setMananger }}',
+			// 				removefromgroups: '={{ $parameter.removefromgroups }}',
+			// 				addtogroups: '={{ $parameter.addtogroups }}',
+			// 				copyfrom: '={{ $parameter.copyfrom }}',
+			// 				label: '={{ $parameter.label }}',
+			// 				value: '={{ $parameter.value }}',
+			// 			},
+			// 		},
+			// 	},
+			// },
 			{
 				name: 'Exec Restore Deleted User',
 				value: 'execRestoreDeletedUser',
