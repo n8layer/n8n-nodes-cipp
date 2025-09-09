@@ -21,7 +21,7 @@
   "engines": {
     "node": ">=20.15"
   },
-  "packageManager": "pnpm@9",
+  "packageManager": "pnpm@9.0.0",
   "main": "index.js",
   "scripts": {
     "build": "pnpm exec rimraf dist && pnpm exec tsc && pnpm exec gulp build:icons",
