@@ -230,9 +230,8 @@ export const userOperations: INodeProperties[] = [
 						url: '/ExecOffboardUser',
 						body: {
 							ConvertToShared: '={{ $parameter.ConvertToShared }}',
-							RemoveLicenses: '={{ $parameter.RemoveLicenses }}',
+							forward: '={{ $parameter.forward ? [Object.fromEntries([["label", $parameter.forward], ["value", $parameter.forward]])] : undefined }}',
 							ResetPass: '={{ $parameter.ResetPass }}',
-							DeleteUser: '={{ $parameter.DeleteUser }}',
 							RemoveMFADevices: '={{ $parameter.RemoveMFADevices }}',
 							RevokeSessions: '={{ $parameter.RevokeSessions }}',
 							RemoveGroups: '={{ $parameter.RemoveGroups }}',
@@ -248,6 +247,8 @@ export const userOperations: INodeProperties[] = [
 							ClearImmutableId: '={{ $parameter.ClearImmutableId }}',
 							disableForwarding: '={{ $parameter.disableForwarding }}',
 							KeepCopy: '={{ $parameter.KeepCopy }}',
+							RemoveLicenses: '={{ $parameter.RemoveLicenses }}',
+							DeleteUser: '={{ $parameter.DeleteUser }}'
 						},
 					},
 				},
@@ -1143,6 +1144,19 @@ export const userFields: INodeProperties[] = [
 		required: true,
 		placeholder: 'n8layer.com',
 		description: 'The domain name of the tenant',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['offboardUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Forward',
+		name: 'forward',
+		type: 'string',
+		default: '',
+		description: 'The email address to forward the user\'s email to',
 		displayOptions: {
 			show: {
 				resource: ['user'],
