@@ -58,6 +58,7 @@ export const userOperations: INodeProperties[] = [
 							Autopassword: '={{ $parameter.Autopassword }}',
 							MustChangePass: '={{ $parameter.MustChangePass }}',
 							removeLicenses: '={{ $parameter.removeLicenses }}',
+							licenses: '={{ $parameter.licenseSkuIds ? $parameter.licenseSkuIds.split(",").map(skuId => ({ label: "License SKU: " + skuId.trim(), value: skuId.trim(), addedFields: {} })).filter(license => license.value !== "") : undefined }}',
 							jobTitle: '={{ $parameter.jobTitle || undefined }}',
 							streetAddress: '={{ $parameter.streetAddress || undefined }}',
 							city: '={{ $parameter.city || undefined }}',
@@ -436,6 +437,19 @@ export const userFields: INodeProperties[] = [
 		type: 'boolean',
 		default: false,
 		description: 'Whether to remove licenses from the user',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'License SKU ID',
+		name: 'licenseSkuIds',
+		type: 'string',
+		default: '',
+		description: 'Comma-separated list of license SKU to assign to the user (e.g., "00e1ec7b-e4a3-40d1-9441-b69b597ab222")',
 		displayOptions: {
 			show: {
 				resource: ['user'],
