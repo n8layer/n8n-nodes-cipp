@@ -45,6 +45,7 @@ export const calendarPermissionOperations: INodeProperties[] = [
 							usertogetpermissions: '={{ $parameter.usertogetpermissions }}',
 							FolderName: '={{ $parameter.FolderName || undefined }}',
 							CanViewPrivateItems: false,
+							SendNotificationToUser: '={{ $parameter.SendNotificationToUser || false }}',
 						},
 					},
 				},
@@ -152,18 +153,6 @@ export const calendarPermissionFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Remove Access',
-		name: 'removeaccess',
-		type: 'boolean',
-		default: false,
-		displayOptions: {
-			show: {
-				resource: ['calendarPermission'],
-				operation: ['update'],
-			},
-		},
-	},
-	{
 		displayName: 'User to Get Permissions',
 		name: 'usertogetpermissions',
 		type: 'string',
@@ -182,6 +171,30 @@ export const calendarPermissionFields: INodeProperties[] = [
 		name: 'FolderName',
 		type: 'string',
 		default: 'Calendar',
+		displayOptions: {
+			show: {
+				resource: ['calendarPermission'],
+				operation: ['update'],
+			},
+		},
+	},
+	{
+		displayName: 'Remove Access',
+		name: 'removeaccess',
+		type: 'boolean',
+		default: false,
+		displayOptions: {
+			show: {
+				resource: ['calendarPermission'],
+				operation: ['update'],
+			},
+		},
+	},
+	{
+		displayName: 'Send Notification to User',
+		name: 'SendNotificationToUser',
+		type: 'boolean',
+		default: false,
 		displayOptions: {
 			show: {
 				resource: ['calendarPermission'],
