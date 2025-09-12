@@ -14,24 +14,24 @@ export const userOperations: INodeProperties[] = [
 			},
 		},
 		options: [
-			{
-				name: 'Add Guest',
-				value: 'addGuest',
-				action: 'Add guest',
-				routing: {
-					request: {
-						method: 'POST',
-						url: '/AddGuest',
-						body: {
-							tenantFilter: '={{ $parameter.tenantFilter }}',
-							displayname: '={{ $parameter.displayname }}',
-							emailaddress: '={{ $parameter.emailaddress }}',
-							message: '={{ $parameter.message }}',
-							redirecturl: '={{ $parameter.redirecturl }}',
-						},
-					},
-				},
-			},
+			// {
+			// 	name: 'Add Guest',
+			// 	value: 'addGuest',
+			// 	action: 'Add guest',
+			// 	routing: {
+			// 		request: {
+			// 			method: 'POST',
+			// 			url: '/AddGuest',
+			// 			body: {
+			// 				tenantFilter: '={{ $parameter.tenantFilter }}',
+			// 				displayname: '={{ $parameter.displayname }}',
+			// 				emailaddress: '={{ $parameter.emailaddress }}',
+			// 				message: '={{ $parameter.message }}',
+			// 				redirecturl: '={{ $parameter.redirecturl }}',
+			// 			},
+			// 		},
+			// 	},
+			// },
 			{
 				name: 'Add User',
 				value: 'addUser',
@@ -147,7 +147,7 @@ export const userOperations: INodeProperties[] = [
 			{
 				name: 'List User',
 				value: 'getUser',
-				action: 'List users',
+				action: 'List user',
 				routing: {
 					request: {
 						method: 'GET',
@@ -254,20 +254,20 @@ export const userOperations: INodeProperties[] = [
 					},
 				},
 			},
-			{
-				name: 'Universal Search',
-				value: 'universalSearch',
-				action: 'Universal search',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/execUniversalsearch',
-						body: {
-							name: '={{ $parameter.name }}',
-						},
-					},
-				},
-			},
+			// {
+			// 	name: 'Universal Search',
+			// 	value: 'universalSearch',
+			// 	action: 'Universal search',
+			// 	routing: {
+			// 		request: {
+			// 			method: 'GET',
+			// 			url: '/execUniversalsearch',
+			// 			body: {
+			// 				name: '={{ $parameter.name }}',
+			// 			},
+			// 		},
+			// 	},
+			// },
 		],
 		default: 'getUser',
 	}
