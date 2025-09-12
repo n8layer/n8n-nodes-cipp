@@ -21,10 +21,10 @@ export const calendarPermissionOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '/ListCalendarPermissions',
+						url: '/listcalendarpermissions',
 						qs: {
-							userId: '={{ $parameter.userid }}',
 							tenantFilter: '={{ $parameter.tenantFilter }}',
+							userId: '={{ $parameter.userId }}',
 						},
 					},
 				},
@@ -36,14 +36,15 @@ export const calendarPermissionOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'POST',   // TODO: this may be a POST; may need to use customer tenant id
-						url: '/AddCalendarPermissions',
+						url: '/ExecModifyCalPerms',
 						body: {
-							TenantFilter: '={{ $parameter.tenantFilter }}',
-							permissions: '={{ $parameter.permissions || undefined }}',
-							Userid: '={{ $parameter.userid }}',
-							removeaccess: '={{ $parameter.removeaccess || undefined }}',
-							usertogetpermissions: '={{ $parameter.usertogetpermissions || undefined }}',
+							permissions: '={{ [{ "FolderName": $parameter.FolderName || "Calendar", "Modification": $parameter.removeaccess ? "Remove" : "Add", "PermissionLevel": { "value": $parameter.permissions, "label": $parameter.permissions }, "UserID": { "value": $parameter.usertogetpermissions, "label": $parameter.usertogetpermissions, "type": "user" } }] }}',
+							tenantFilter: '={{ $parameter.tenantFilter }}',
+							userID: '={{ $parameter.userId }}',
+							removeaccess: '={{ $parameter.removeaccess || false }}',
+							usertogetpermissions: '={{ $parameter.usertogetpermissions }}',
 							FolderName: '={{ $parameter.FolderName || undefined }}',
+							CanViewPrivateItems: false,
 						},
 					},
 				},
@@ -58,6 +59,7 @@ export const calendarPermissionFields: INodeProperties[] = [
 		name: 'userId',
 		type: 'string',
 		required: true,
+		description: 'The email address or ID of the user to get the calendar permissions for',
 		default: '',
 		displayOptions: {
 			show: {
@@ -71,6 +73,7 @@ export const calendarPermissionFields: INodeProperties[] = [
 		name: 'tenantFilter',
 		type: 'string',
 		required: true,
+		description: 'The tenant ID of the user or the domain name (e.g., "n8layer.com")',
 		default: '',
 		displayOptions: {
 			show: {
@@ -84,6 +87,7 @@ export const calendarPermissionFields: INodeProperties[] = [
 		name: 'tenantFilter',
 		type: 'string',
 		required: true,
+		description: 'The tenant ID of the user or the domain name (e.g., "n8layer.com")',
 		default: '',
 		displayOptions: {
 			show: {
@@ -138,6 +142,10 @@ export const calendarPermissionFields: INodeProperties[] = [
 				value: 'Publishing Author',
 			},
 			{
+				name: 'Publishing Editor',
+				value: 'Publishing Editor',
+			},
+			{
 				name: 'Reviewer',
 				value: 'Reviewer',
 			},
@@ -160,6 +168,8 @@ export const calendarPermissionFields: INodeProperties[] = [
 		name: 'usertogetpermissions',
 		type: 'string',
 		default: '',
+		description: 'The email address or ID of the user to get the calendar permissions for',
+		required: true,
 		displayOptions: {
 			show: {
 				resource: ['calendarPermission'],
@@ -171,7 +181,7 @@ export const calendarPermissionFields: INodeProperties[] = [
 		displayName: 'Folder Name',
 		name: 'FolderName',
 		type: 'string',
-		default: '',
+		default: 'Calendar',
 		displayOptions: {
 			show: {
 				resource: ['calendarPermission'],
