@@ -38,14 +38,14 @@ export const calendarPermissionOperations: INodeProperties[] = [
 						method: 'POST',   // TODO: this may be a POST; may need to use customer tenant id
 						url: '/ExecModifyCalPerms',
 						body: {
-							permissions: '={{ [{ "FolderName": $parameter.FolderName || "Calendar", "Modification": $parameter.removeaccess ? "Remove" : "Add", "PermissionLevel": { "value": $parameter.permissions, "label": $parameter.permissions }, "UserID": { "value": $parameter.usertogetpermissions, "label": $parameter.usertogetpermissions, "type": "user" } }] }}',
+							permissions: '={{ [{ "FolderName": $parameter.FolderName || "Calendar", "Modification": $parameter.removeaccess ? "Remove" : "Add", "PermissionLevel": { "value": $parameter.permissions, "label": $parameter.permissions }, "SendNotificationToUser": $parameter.SendNotificationToUser, "UserID": { "value": $parameter.usertogetpermissions, "label": $parameter.usertogetpermissions, "type": "user" } }] }}',
 							tenantFilter: '={{ $parameter.tenantFilter }}',
 							userID: '={{ $parameter.userId }}',
 							removeaccess: '={{ $parameter.removeaccess || false }}',
 							usertogetpermissions: '={{ $parameter.usertogetpermissions }}',
 							FolderName: '={{ $parameter.FolderName || undefined }}',
 							CanViewPrivateItems: false,
-							SendNotificationToUser: '={{ $parameter.SendNotificationToUser || false }}',
+							SendNotificationToUser: true,
 						},
 					},
 				},
