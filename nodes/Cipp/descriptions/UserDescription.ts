@@ -77,9 +77,10 @@ export const userOperations: INodeProperties[] = [
 							webhook: '={{ $parameter.webhook || false }}',
 							email: '={{ $parameter.email || false }}',
 							psa: '={{ $parameter.psa || false }}',
-						},
+							copyFrom: '={{ $parameter.copyFromUser ? {value: $parameter.copyFromUser} : undefined }}',
 					},
 				},
+			},
 			},
 
 			// {
@@ -688,6 +689,19 @@ export const userFields: INodeProperties[] = [
 		type: 'boolean',
 		default: false,
 		description: 'Whether to send results to PSA',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Copy From User',
+		name: 'copyFromUser',
+		type: 'string',
+		default: '',
+		description: 'User ID or UPN to copy group memberships from',
 		displayOptions: {
 			show: {
 				resource: ['user'],
