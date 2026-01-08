@@ -59,6 +59,8 @@ export const userOperations: INodeProperties[] = [
 							MustChangePass: '={{ $parameter.MustChangePass }}',
 							removeLicenses: '={{ $parameter.removeLicenses }}',
 							licenses: '={{ $parameter.licenseSkuIds ? $parameter.licenseSkuIds.split(",").map(skuId => ({ label: "License SKU: " + skuId.trim(), value: skuId.trim(), addedFields: {} })).filter(license => license.value !== "") : undefined }}',
+							sherweb: '={{ $parameter.sherweb || false }}',
+							sherwebLicense: '={{ $parameter.sherwebLicense ? Object.fromEntries([["label", $parameter.sherwebLicense], ["value", $parameter.sherwebLicense], ["addedFields", {}]]) : undefined }}',
 							jobTitle: '={{ $parameter.jobTitle || undefined }}',
 							streetAddress: '={{ $parameter.streetAddress || undefined }}',
 							city: '={{ $parameter.city || undefined }}',
@@ -454,6 +456,33 @@ export const userFields: INodeProperties[] = [
 			show: {
 				resource: ['user'],
 				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Enable Sherweb License Purchase',
+		name: 'sherweb',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to purchase a new Sherweb license if licenses are unavailable',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+			},
+		},
+	},
+	{
+		displayName: 'Sherweb License SKU',
+		name: 'sherwebLicense',
+		type: 'string',
+		default: '',
+		description: 'The Sherweb license SKU to purchase (e.g., "M365-SMB-BUSINESS-STANDARD")',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['addUser'],
+				sherweb: [true],
 			},
 		},
 	},
